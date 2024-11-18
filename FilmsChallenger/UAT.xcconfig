@@ -1,0 +1,12 @@
+//
+//  UAT.xcconfig
+//  FilmsChallenger
+//
+//  Created by Raul Kevin Aliaga Shapiama on 9/29/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+BASE_URL = https://uat.api.example.com
+API_KEY = uat-987654321
