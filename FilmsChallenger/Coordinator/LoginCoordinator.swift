@@ -11,6 +11,7 @@ import UIKit
 protocol LoginCoordinatorProtocol {
     func goToHome()
     func showLoginErrorAlert()
+    func goToRegisterAccount()
 }
 
 class LoginCoordinator: Coordinator, LoginCoordinatorProtocol {
@@ -41,5 +42,11 @@ class LoginCoordinator: Coordinator, LoginCoordinatorProtocol {
         let dismiss = UIAlertAction(title: "Intentar de nuevo", style: .default, handler: nil)
         alertController.addAction(dismiss)
         navigationController.present(alertController, animated: true, completion: nil)
+    }
+    
+    func goToRegisterAccount() {
+        let registerCoordinator = RegisterCoordinator(navigationController: navigationController)
+        let registerViewController = RegisterViewController(coordinator: registerCoordinator)
+        navigationController.pushViewController(registerViewController, animated: true)
     }
 }

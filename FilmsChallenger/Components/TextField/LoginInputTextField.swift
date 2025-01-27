@@ -50,7 +50,7 @@ class LoginInputTextField: UIView {
     private let imageLeft: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(systemName: "person.circle")
+        imageView.image = UIImage(systemName: "mail")
         imageView.tintColor = .black
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -163,6 +163,9 @@ class LoginInputTextField: UIView {
             imageLeft.image = UIImage(systemName: "lock.circle")
             viewImageRight.isHidden = false
             passwordGesture()
+        case .personality:
+            imageLeft.image = UIImage(systemName: "person.circle")
+            viewImageRight.isHidden = true
         }
         
         textField.font = UIFont.customFont(.medium, size: .bodyMediumMedium)
@@ -181,5 +184,6 @@ class LoginInputTextField: UIView {
 enum LoginInputTextFieldType {
     case email
     case password
+    case personality
 }
 

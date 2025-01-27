@@ -43,7 +43,7 @@ class PrimaryButton: UIButton {
         switch status {
         //case .loading:
         case .enabled:
-            backgroundColor = UIColor.infoHover
+            backgroundColor = UIColor.infoPressed
             isUserInteractionEnabled = true
         case .disabled:
             backgroundColor = UIColor.infoFocus
