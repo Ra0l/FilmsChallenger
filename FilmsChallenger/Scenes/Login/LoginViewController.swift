@@ -6,52 +6,58 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginViewController: UIViewController {
     
     var coordinator: LoginCoordinatorProtocol?
     
-    private let imgLogo: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "logo")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    
-    private let titleLabel: UILabel = {
+    private let titleLogin: UILabel = {
         let label = UILabel()
-        label.text = "Iniciar Sesion"
-        label.font = .systemFont(ofSize: .init(30), weight: .bold)
+        label.text = "Sign in now"
+        label.font = UIFont.customFont(.semiBold, size: .heading3)
+        label.textColor = UIColor.neutral100
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let usernameTextField: EmailTextField = {
-        let textField = EmailTextField()
-        textField.placeholder = "Usuario"
-        textField.text = "Admin"
-        textField.border_width = 2
-        textField.layer.cornerRadius = 10
-        textField.border_color = .black
+    private let subtitleLogin: UILabel = {
+        let label = UILabel()
+        label.text = "Please sign in to continue our app"
+        label.font = UIFont.customFont(.light, size: .heading5)
+        label.textColor = UIColor.neutral50
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let usernameTextField: LoginInputTextField = {
+        let textField = LoginInputTextField()
+        textField.configure(withPlaceholder: "Username o Email", type: .email)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
-    private let passwordTextField: PasswordTextField = {
-        let textField = PasswordTextField()
-        textField.placeholder = "Contraseña"
-        textField.text = "Password*123"
-        textField.border_width = 2
-        textField.layer.cornerRadius = 10
-        textField.border_color = .black
+    private let passwordTextField: LoginInputTextField = {
+        let textField = LoginInputTextField()
+        textField.configure(withPlaceholder: "Password", type: .password)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
-    private let loginButton: ActionButton = {
-        let button = ActionButton()
-        button.setTitle("Iniciar Sessión", for: .normal)
+    private let forgetLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Forget password?"
+        label.font = UIFont.customFont(.semiBold, size: .bodySmallSemiBold)
+        label.textColor = UIColor.neutral100
+        label.textAlignment = .right
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    
+    private let loginButton: PrimaryButton = {
+        let button = PrimaryButton()
+        button.configure(title: "Sign In", status: .disabled)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -62,47 +68,69 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         initView()
         setActions()
+        if FirebaseApp.app() != nil {
+            print("Firebase está configurado correctamente")
+        } else {
+            print("Firebase no está configurado")
+        }
     }
     
     private func initView() {
         view.backgroundColor = .white
-        view.addSubview(titleLabel)
-        view.addSubview(imgLogo)
+        view.addSubview(titleLogin)
+        view.addSubview(subtitleLogin)
         view.addSubview(usernameTextField)
         view.addSubview(passwordTextField)
+        view.addSubview(forgetLabel)
         view.addSubview(loginButton)
         
         NSLayoutConstraint.activate([
             
-            imgLogo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imgLogo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
-            imgLogo.heightAnchor.constraint(equalToConstant: 200),
-            imgLogo.widthAnchor.constraint(equalToConstant: 200),
+            titleLogin.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60),
+            titleLogin.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: imgLogo.bottomAnchor, constant: 20),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            subtitleLogin.topAnchor.constraint(equalTo: titleLogin.bottomAnchor, constant: 20),
+            subtitleLogin.centerXAnchor.constraint(equalTo: titleLogin.centerXAnchor),
             
-            
-            usernameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            usernameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            usernameTextField.topAnchor.constraint(equalTo: subtitleLogin.bottomAnchor, constant: 40),
+            usernameTextField.centerXAnchor.constraint(equalTo: subtitleLogin.centerXAnchor),
             usernameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             usernameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            usernameTextField.heightAnchor.constraint(equalToConstant: 44),
             
-            passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 20),
-            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 44),
+            passwordTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 24),
+            passwordTextField.leadingAnchor.constraint(equalTo: usernameTextField.leadingAnchor),
+            passwordTextField.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor),
             
-            loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
-            loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            loginButton.heightAnchor.constraint(equalToConstant: 44),
+            forgetLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16),
+            forgetLabel.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
+            forgetLabel.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
+            
+            loginButton.topAnchor.constraint(equalTo: forgetLabel.bottomAnchor, constant: 40),
+            loginButton.trailingAnchor.constraint(equalTo: forgetLabel.trailingAnchor),
+            loginButton.leadingAnchor.constraint(equalTo: forgetLabel.leadingAnchor),
+            loginButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+        
+        validateInputs()
+    }
+    
+    private func validateInputs() {
+        // Añadir observers a los textfields para detectar cambios en el texto
+        usernameTextField.textField.addTarget(self, action: #selector(textFieldsDidChange), for: .editingChanged)
+        passwordTextField.textField.addTarget(self, action: #selector(textFieldsDidChange), for: .editingChanged)
+    }
+    
+    // Método que se llama cada vez que el usuario escribe en los textfields
+    @objc private func textFieldsDidChange() {
+        let isUsernameEmpty = usernameTextField.textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true
+        let isPasswordEmpty = passwordTextField.textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true
+        
+        // Habilitar el botón solo si ambos campos tienen texto
+        if !isUsernameEmpty && !isPasswordEmpty {
+            loginButton.configure(title: "Sign In", status: .enabled)
+        } else {
+            loginButton.configure(title: "Sign In", status: .disabled)
+        }
     }
     
     func setActions() {
@@ -110,7 +138,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func didTapLoginButton() {
-        guard let username = usernameTextField.text, let password = passwordTextField.text else { return }
+        guard let username = usernameTextField.textField.text, let password = passwordTextField.textField.text else { return }
         
         if viewModel.loginWithUser(username, password: password) {
             self.coordinator?.goToHome()
@@ -118,5 +146,4 @@ class LoginViewController: UIViewController {
             self.coordinator?.showLoginErrorAlert()
         }
     }
-
 }
