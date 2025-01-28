@@ -7,10 +7,18 @@
 
 import UIKit
 import Firebase
+import Combine
+import NVActivityIndicatorView
 
 class LoginViewController: UIViewController {
     
     var coordinator: LoginCoordinatorProtocol?
+    private var cancellables = Set<AnyCancellable>()
+    // Agregar el loader
+    private let activityIndicator = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 60, height: 60),
+                                                            type: .circleStrokeSpin,
+                                                            color: UIColor.infoPressed,
+                                                            padding: 0)
     
     private let titleLogin: UILabel = {
         let label = UILabel()
@@ -33,6 +41,7 @@ class LoginViewController: UIViewController {
     private let usernameTextField: LoginInputTextField = {
         let textField = LoginInputTextField()
         textField.configure(withPlaceholder: "Username o Email", type: .email)
+        textField.textField.text = "Admin"
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -40,6 +49,7 @@ class LoginViewController: UIViewController {
     private let passwordTextField: LoginInputTextField = {
         let textField = LoginInputTextField()
         textField.configure(withPlaceholder: "Password", type: .password)
+        textField.textField.text = "Password*123"
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -131,6 +141,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         initView()
         setActions()
+        bindingView()
     }
     
     private func initView() {
@@ -151,6 +162,9 @@ class LoginViewController: UIViewController {
         socialsAccountStackView.addArrangedSubview(facebookImageView)
         socialsAccountStackView.addArrangedSubview(instagramImageView)
         socialsAccountStackView.addArrangedSubview(twiterImageView)
+        
+        activityIndicator.center = view.center
+        view.addSubview(activityIndicator)
         
         NSLayoutConstraint.activate([
             
@@ -189,6 +203,26 @@ class LoginViewController: UIViewController {
         ])
         
         validateInputs()
+    }
+    
+    private func bindingView() {
+        viewModel.loadingPublisher
+            .sink { [weak self] isLoading in
+                isLoading ? self?.startLoading() : self?.stopLoading()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.successPublisher
+            .sink { [weak self] in
+                self?.coordinator?.goToHome()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.errorPublisher
+            .sink { [weak self] errorMessage in
+                self?.coordinator?.showLoginErrorAlert()
+            }
+            .store(in: &cancellables)
     }
     
     private func validateInputs() {
@@ -231,12 +265,16 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func didTapLoginButton() {
-        guard let username = usernameTextField.textField.text, let password = passwordTextField.textField.text else { return }
-        
-        if viewModel.loginWithUser(username, password: password) {
-            self.coordinator?.goToHome()
-        } else {
-            self.coordinator?.showLoginErrorAlert()
-        }
+        guard let email = usernameTextField.textField.text, let password = passwordTextField.textField.text else { return }
+        viewModel.loginWithUser(email, password: password)
+    }
+    
+    // Métodos para manejar el loader
+    private func startLoading() {
+        activityIndicator.startAnimating()
+    }
+    
+    private func stopLoading() {
+        activityIndicator.stopAnimating()
     }
 }

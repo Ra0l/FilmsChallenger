@@ -31,9 +31,9 @@
 		F7BF10FC2D4810E100675ADB /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F7BF10FB2D4810E100675ADB /* FirebaseStorage */; };
 		F7BF10FE2D4810E100675ADB /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = F7BF10FD2D4810E100675ADB /* FirebaseStorageCombine-Community */; };
 		F7BF11002D4810E100675ADB /* FirebaseVertexAI in Frameworks */ = {isa = PBXBuildFile; productRef = F7BF10FF2D4810E100675ADB /* FirebaseVertexAI */; };
+		F7C15BEF2D4944C3008169BB /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = F7C15BEE2D4944C3008169BB /* NVActivityIndicatorView */; };
+		F7C15BF12D4944C3008169BB /* NVActivityIndicatorViewExtended in Frameworks */ = {isa = PBXBuildFile; productRef = F7C15BF02D4944C3008169BB /* NVActivityIndicatorViewExtended */; };
 		F7EDF4272C9D15F200C085C0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F7EDF4262C9D15F200C085C0 /* Kingfisher */; };
-		F7EDF47B2C9E071100C085C0 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = F7EDF47A2C9E071100C085C0 /* NVActivityIndicatorView */; };
-		F7EDF47D2C9E071100C085C0 /* NVActivityIndicatorViewExtended in Frameworks */ = {isa = PBXBuildFile; productRef = F7EDF47C2C9E071100C085C0 /* NVActivityIndicatorViewExtended */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,16 +84,16 @@
 			files = (
 				F7BF10EC2D4810E100675ADB /* FirebaseFunctions in Frameworks */,
 				F7BF10E42D4810E100675ADB /* FirebaseDatabase in Frameworks */,
-				F7EDF47D2C9E071100C085C0 /* NVActivityIndicatorViewExtended in Frameworks */,
 				F7BF10FC2D4810E100675ADB /* FirebaseStorage in Frameworks */,
 				F7BF10D62D4810E100675ADB /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				F7BF10E02D4810E100675ADB /* FirebaseCore in Frameworks */,
-				F7EDF47B2C9E071100C085C0 /* NVActivityIndicatorView in Frameworks */,
 				F7BF10F42D4810E100675ADB /* FirebaseMLModelDownloader in Frameworks */,
 				F7BF10E62D4810E100675ADB /* FirebaseDynamicLinks in Frameworks */,
 				F7BF10D42D4810E100675ADB /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				F7BF10DC2D4810E100675ADB /* FirebaseAuth in Frameworks */,
+				F7C15BF12D4944C3008169BB /* NVActivityIndicatorViewExtended in Frameworks */,
 				F7BF10E82D4810E100675ADB /* FirebaseFirestore in Frameworks */,
+				F7C15BEF2D4944C3008169BB /* NVActivityIndicatorView in Frameworks */,
 				F7BF10EA2D4810E100675ADB /* FirebaseFirestoreCombine-Community in Frameworks */,
 				F7BF11002D4810E100675ADB /* FirebaseVertexAI in Frameworks */,
 				F7BF10F02D4810E100675ADB /* FirebaseInAppMessaging-Beta in Frameworks */,
@@ -161,8 +161,6 @@
 			name = FilmsChallenger;
 			packageProductDependencies = (
 				F7EDF4262C9D15F200C085C0 /* Kingfisher */,
-				F7EDF47A2C9E071100C085C0 /* NVActivityIndicatorView */,
-				F7EDF47C2C9E071100C085C0 /* NVActivityIndicatorViewExtended */,
 				F7BF10D12D4810E100675ADB /* FirebaseAnalytics */,
 				F7BF10D32D4810E100675ADB /* FirebaseAnalyticsOnDeviceConversion */,
 				F7BF10D52D4810E100675ADB /* FirebaseAnalyticsWithoutAdIdSupport */,
@@ -187,6 +185,8 @@
 				F7BF10FB2D4810E100675ADB /* FirebaseStorage */,
 				F7BF10FD2D4810E100675ADB /* FirebaseStorageCombine-Community */,
 				F7BF10FF2D4810E100675ADB /* FirebaseVertexAI */,
+				F7C15BEE2D4944C3008169BB /* NVActivityIndicatorView */,
+				F7C15BF02D4944C3008169BB /* NVActivityIndicatorViewExtended */,
 			);
 			productName = FilmsChallenger;
 			productReference = F7DAB3C72C9CEF93009EEFAB /* FilmsChallenger.app */;
@@ -245,8 +245,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				F7EDF4252C9D15F200C085C0 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				F7EDF4792C9E015500C085C0 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
 				F7BF10D02D4810E100675ADB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				F7C15BED2D4944C3008169BB /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F7DAB3C82C9CEF93009EEFAB /* Products */;
@@ -882,20 +882,20 @@
 				minimumVersion = 11.7.0;
 			};
 		};
+		F7C15BED2D4944C3008169BB /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ninjaprox/NVActivityIndicatorView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.0;
+			};
+		};
 		F7EDF4252C9D15F200C085C0 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 8.0.1;
-			};
-		};
-		F7EDF4792C9E015500C085C0 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ninjaprox/NVActivityIndicatorView.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1021,20 +1021,20 @@
 			package = F7BF10D02D4810E100675ADB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseVertexAI;
 		};
+		F7C15BEE2D4944C3008169BB /* NVActivityIndicatorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7C15BED2D4944C3008169BB /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
+			productName = NVActivityIndicatorView;
+		};
+		F7C15BF02D4944C3008169BB /* NVActivityIndicatorViewExtended */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7C15BED2D4944C3008169BB /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
+			productName = NVActivityIndicatorViewExtended;
+		};
 		F7EDF4262C9D15F200C085C0 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F7EDF4252C9D15F200C085C0 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
-		};
-		F7EDF47A2C9E071100C085C0 /* NVActivityIndicatorView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F7EDF4792C9E015500C085C0 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
-			productName = NVActivityIndicatorView;
-		};
-		F7EDF47C2C9E071100C085C0 /* NVActivityIndicatorViewExtended */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F7EDF4792C9E015500C085C0 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
-			productName = NVActivityIndicatorViewExtended;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

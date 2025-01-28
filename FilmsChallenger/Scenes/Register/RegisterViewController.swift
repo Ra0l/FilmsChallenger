@@ -8,12 +8,19 @@
 import Foundation
 import UIKit
 import Combine
+import NVActivityIndicatorView
 
 class RegisterViewController: UIViewController {
 
     var coordinator: RegisterCoordinatorProtocol?
     private let viewModel: RegisterViewModel
     private var cancellables = Set<AnyCancellable>()
+    
+    // Agregar el loader
+    private let activityIndicator = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 60, height: 60),
+                                                            type: .circleStrokeSpin,
+                                                            color: UIColor.infoPressed,
+                                                            padding: 0)
     
     private let backImageView: UIImageView = {
         let imageView = UIImageView()
@@ -195,6 +202,9 @@ class RegisterViewController: UIViewController {
         socialsAccountStackView.addArrangedSubview(instagramImageView)
         socialsAccountStackView.addArrangedSubview(twiterImageView)
         
+        activityIndicator.center = view.center
+        view.addSubview(activityIndicator)
+        
         NSLayoutConstraint.activate([
             
             backImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -239,18 +249,24 @@ class RegisterViewController: UIViewController {
     private func bindViewModel() {
         
         viewModel.successPublisher
-            .compactMap {$0}
+            .compactMap { $0 }
             .sink { [weak self] message in
-                if let self = self {
-                    print(message)
-                }
+                self?.coordinator?.showRegisterErrorAlert(title: "SUCCESS",
+                                                          message: message, actionTitle: "Iniciar Sesión")
+            }
+            .store(in: &cancellables)
+        
+        viewModel.errorPublisher
+            .compactMap { $0 }
+            .sink { [weak self] error in
+                self?.coordinator?.showRegisterErrorAlert(title: "ERROR", message: error, actionTitle: "Intentar de nuevo")
             }
             .store(in: &cancellables)
         
         viewModel.loadingPublisher
             .sink { [weak self] isLoading in
-                if let self = self {
-                    print(isLoading)
+                DispatchQueue.main.async {
+                    isLoading ? self?.startLoading() : self?.stopLoading()
                 }
             }
             .store(in: &cancellables)
@@ -304,5 +320,13 @@ class RegisterViewController: UIViewController {
         }
         viewModel.registerUser(email: email, password: password, name: username)
     }
-
+    
+    // Métodos para manejar el loader
+    private func startLoading() {
+        activityIndicator.startAnimating()
+    }
+    
+    private func stopLoading() {
+        activityIndicator.stopAnimating()
+    }
 }

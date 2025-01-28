@@ -36,7 +36,7 @@ class UserDataSource {
                 if let error = error {
                     completion(.failure(error))
                 }else {
-                    let newUser = User(id: user.uid, name: name, email: email, createdAt: Date())
+                    let newUser = User(uid: user.uid, name: name, email: email, createdAt: Date())
                     completion(.success(newUser))
                 }
             }

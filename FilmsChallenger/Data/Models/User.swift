@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 struct User {
-    let id: String
-    let name: String
-    let email: String
-    let createdAt: Date
+    let uid: String?
+    let name: String?
+    let email: String?
+    let createdAt: Date?
 }
