@@ -45,8 +45,12 @@ class LoginCoordinator: Coordinator, LoginCoordinatorProtocol {
     }
     
     func goToRegisterAccount() {
+        let dataSource = UserDataSource()
+        let repository = UserRepositoryImplement(dataSource: dataSource)
+        let useCase = RegisterUseCase(userRepository: repository)
+        let viewModel = RegisterViewModel(registerUserUseCase: useCase)
         let registerCoordinator = RegisterCoordinator(navigationController: navigationController)
-        let registerViewController = RegisterViewController(coordinator: registerCoordinator)
+        let registerViewController = RegisterViewController(viewModel: viewModel, coordinator: registerCoordinator)
         navigationController.pushViewController(registerViewController, animated: true)
     }
 }

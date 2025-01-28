@@ -7,10 +7,13 @@
 
 import Foundation
 import UIKit
+import Combine
 
 class RegisterViewController: UIViewController {
 
     var coordinator: RegisterCoordinatorProtocol?
+    private let viewModel: RegisterViewModel
+    private var cancellables = Set<AnyCancellable>()
     
     private let backImageView: UIImageView = {
         let imageView = UIImageView()
@@ -148,7 +151,8 @@ class RegisterViewController: UIViewController {
         return stackView
     }()
     
-    init(coordinator: RegisterCoordinatorProtocol) {
+    init(viewModel: RegisterViewModel, coordinator: RegisterCoordinatorProtocol) {
+        self.viewModel = viewModel
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
@@ -163,6 +167,7 @@ class RegisterViewController: UIViewController {
         view.backgroundColor = .white
         initView()
         setActions()
+        bindViewModel()
     }
     
     private func initView() {
@@ -231,10 +236,42 @@ class RegisterViewController: UIViewController {
         validateInputs()
     }
     
+    private func bindViewModel() {
+        
+        viewModel.successPublisher
+            .compactMap {$0}
+            .sink { [weak self] message in
+                if let self = self {
+                    print(message)
+                }
+            }
+            .store(in: &cancellables)
+        
+        viewModel.loadingPublisher
+            .sink { [weak self] isLoading in
+                if let self = self {
+                    print(isLoading)
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
     private func validateInputs() {
         // Añadir observers a los textfields para detectar cambios en el texto
         usernameTextField.textField.addTarget(self, action: #selector(textFieldsDidChange), for: .editingChanged)
         passwordTextField.textField.addTarget(self, action: #selector(textFieldsDidChange), for: .editingChanged)
+    }
+    
+    func setActions() {
+        loginButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
+        
+        let backGesture = UITapGestureRecognizer(target: self, action: #selector(backTapped))
+        backImageView.isUserInteractionEnabled = true
+        backImageView.addGestureRecognizer(backGesture)
+        
+        let signUpGesture = UITapGestureRecognizer(target: self, action: #selector(signUpTapped))
+        signUpAccountLabel.isUserInteractionEnabled = true
+        signUpAccountLabel.addGestureRecognizer(signUpGesture)
     }
     
     // Método que se llama cada vez que el usuario escribe en los textfields
@@ -251,18 +288,6 @@ class RegisterViewController: UIViewController {
         }
     }
     
-    func setActions() {
-        loginButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
-        
-        let backGesture = UITapGestureRecognizer(target: self, action: #selector(backTapped))
-        backImageView.isUserInteractionEnabled = true
-        backImageView.addGestureRecognizer(backGesture)
-        
-        let signUpGesture = UITapGestureRecognizer(target: self, action: #selector(signUpTapped))
-        signUpAccountLabel.isUserInteractionEnabled = true
-        signUpAccountLabel.addGestureRecognizer(signUpGesture)
-    }
-    
     @objc func backTapped() {
         print("Tap -------- Froget password")
         navigationController?.popViewController(animated: true)
@@ -274,7 +299,10 @@ class RegisterViewController: UIViewController {
     }
     
     @objc private func didTapLoginButton() {
-        
+        guard let username = usernameTextField.textField.text, let email = emailTextField.textField.text, let password = passwordTextField.textField.text else {
+            return
+        }
+        viewModel.registerUser(email: email, password: password, name: username)
     }
 
 }
